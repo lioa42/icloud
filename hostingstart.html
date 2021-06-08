@@ -1,0 +1,89 @@
+﻿<html class="translated-ltr" style="
+   background-image: url( 'https://pbs.twimg.com/media/EWvVYO7XgAAahd_.jpg');">
+<head><meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>星期一早上</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js"></script>
+</head>
+<body style="zoom: 1;" align="center" >
+<script type="text/javascript">
+    function process() {
+        
+        let PredictionKey = 'e791b22eb5d94083883543f66143c58d';
+        let ImageUrl = 'https://southcentralus.api.cognitive.microsoft.com/customvision/v3.0/Prediction/ed996110-0f10-43f8-99ec-b29698003d88/classify/iterations/Iteration1/url';
+        if (!PredictionKey) { throw new Error('Set your environment variables for your PredictionKey key and ImageUrl.'); }
+        
+        var SourceImageUrl = document.getElementById("inputImageUrl").value;
+        document.querySelector("#sourceImage").src = SourceImageUrl;
+
+        $.ajax({
+            url: ImageUrl + "?",
+            beforeSend: function(Image){
+                Image.setRequestHeader("Content-Type","application/json");
+                Image.setRequestHeader("Prediction-Key", PredictionKey);
+            },
+            type: "POST",
+            data: '{"url": ' + '"' + SourceImageUrl + '"}',
+        })
+
+        .done(function(data) {
+            $("#textarea").val(JSON.stringify(data, null, 2));
+        })
+
+        .fail(function(Image2, textStatus, errorThrown) {
+            var errorString = (errorThrown === "") ? "Error. " :
+                errorThrown + " (" + Image2.status + "): ";
+            errorString += (Image2.responseText === "") ? "" :
+                jQuery.parseJSON(Image2.responseText).message;
+            alert(errorString);
+        });
+    };
+</script>
+
+<h1 style="
+        margin: 0;
+        padding: 20px 0;
+        color: saddlebrown;
+    ">
+廖梓善1310834034</br>陳奕熏1310834012
+
+</h1>
+<hr>
+<h2 style="
+        margin: 0;
+        padding: 20px 0;
+        color: saddlebrown;
+    ">
+<br>Custom vision.ai
+</h2>
+請輸入圖片URL後，按下
+<strong>
+    <font style="vertical-align: inherit;">
+    <font style="vertical-align: inherit;">開始辨識
+    </font>
+    </font>
+</strong>
+按鈕 &nbsp&nbsp
+<br>
+<br>
+圖片URL： 
+<input type="text" name="inputImageUrl" id="inputImageUrl" value="https://pgw.udn.com.tw/gw/photo.php?u=https://uc.udn.com.tw/photo/2020/06/09/99/8004813.jpg&x=0&y=0&sw=0&sh=0&sl=W&fw=800&exp=3600&w=930">
+<button onclick="process()">開始辨識</button>
+<br>
+<img src="https://1.bp.blogspot.com/-noejtvMJM8Q/V4SA7f_DLbI/AAAAAAAA8OM/Ajwehtq2jCgO2QvPdxGJz5I290VyUZVLQCLcB/s400/dog_akitainu.png " width="200" height="200">
+<br><br>
+<div >
+    <div>
+        <h3 style="color: sienna;">圖片來源</h3>
+        <br>
+        <img id="sourceImage" width="400" src="https://pgw.udn.com.tw/gw/photo.php?u=https://uc.udn.com.tw/photo/2020/06/09/99/8004813.jpg&x=0&y=0&sw=0&sh=0&sl=W&fw=800&exp=3600&w=930">
+    </div>
+    <br>
+    <br>
+    <div>
+        <h3 style="color: sienna;">Custom Vision API 回應</h3>
+        <br>
+        <textarea id="textarea" style="width:580px; height:400px;"></textarea>
+    </div>
+</div>
+
+</body></html>
